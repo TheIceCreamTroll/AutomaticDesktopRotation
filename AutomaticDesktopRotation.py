@@ -9,10 +9,10 @@ import serial.tools.list_ports as listports
 ######## Edit these values as needed ##############
 
 # Number of Arduinos being used.
-DeviceCount = 2
+DeviceCount = 1
 
 # Enable this to print stuff to console. Wouldn't do anything while running in the background.
-quiet = False
+quiet = True
 
 # If, for whatever reason, the win32api rotation method doesn't work,
 # this is a functionally equivalent fallback. Set displayexe to wherever you've placed display64.exe.
