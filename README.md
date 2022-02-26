@@ -47,7 +47,7 @@ WantedBy=multi-user.target
 ```
 3. Reload the daemon.<br>
 ```sudo systemctl daemon-reload```<br>
-4. Enable it.<br>
+4. Enable the service.<br>
 ```sudo systemctl enable AutoScreenRotation.service```<br>
 5. Start the service.<br>
 ```sudo systemctl start AutoScreenRotation.service```<br>
