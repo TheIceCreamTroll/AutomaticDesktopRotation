@@ -15,11 +15,9 @@ Note: The only Arduino I own is the Nano 33 BLE. This should work with other boa
 2. In AuotmaticDesktopRotation.py, set ```DeviceCount =``` to the number of Arduinos you are using.
 #### Windows
 1. Install PyWin32: ```pip install pywin32```
-
 2. If, for whatever reason, you have issues with PyWin32:
    1. [Download display.exe](http://noeld.com/programs.asp?cat=misc#display)
    2. In AutoScreenRotation.py, set ```windowsfallback = True``` and ```displayexe =``` to the location of display64.exe.
-
 3. To make AutoScreenRotation.py start on boot: 
     1. Move AutoScreenRotation.py to ```%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup\```
     2. Change the file extension to .pyw. 
@@ -30,8 +28,6 @@ Note: The only Arduino I own is the Nano 33 BLE. This should work with other boa
 1. Install xrandr using your distro's package manager.<br>
 Debian-based: ```sudo apt install xrandr```<br>
 Arch-based: ```sudo pacman xorg-xrandr```
-
-
 2. To make AutoScreenRotation.py start on boot:<br>
     1. Run ```sudo nano /etc/systemd/system/AutoScreenRotation.service```
     2. Paste the following text, replacing {python path} and {script path} appropriately.
