@@ -9,10 +9,10 @@ import serial.tools.list_ports as listports
 ######## Edit these values as needed ##############
 
 # Number of Arduinos being used.
-DeviceCount = 1
+DeviceCount = 2
 
 # Enable this to print stuff to console. Wouldn't do anything while running in the background.
-quiet = True
+quiet = False
 
 # If, for whatever reason, the win32api rotation method doesn't work,
 # this is a functionally equivalent fallback. Set displayexe to wherever you've placed display64.exe.
@@ -44,35 +44,40 @@ def initSerial(dev):
 
 
 def waitForSerialInit():
-    possibleDevices = []
-
-    ports = listports.comports()
-    for port, desc, hwid in sorted(ports):
-        possibleDevices.append(port)
-
     while True:
+        possibleDevices = []
+        ports = listports.comports()
+        for port, desc, hwid in sorted(ports):
+            possibleDevices.append(port)
+
         for dev in possibleDevices:
+            log("Dev: " + dev)
             try:
+                log(possibleDevices)
                 ser = initSerial(dev)
                 log("device found on " + dev)
                 return ser
             except Exception:
                 log("Failed to initialize device on " + dev)
                 continue
+        log("Sleeping for 5 secomds")
         sleep(5)
 
 
 def RotationProcess():
+
+
     # Initialize at 0 degrees
     old = "0"
     ser = waitForSerialInit()
+    firstCycle = True
 
     while True:
         try:
             line = ser.readline().decode("utf-8")
         except Exception:
             log("error: ")
-            print_exc()
+            #print_exc()
             log("probably not plugged in")
             sleep(5)
             log("trying to init serial again")
@@ -88,18 +93,21 @@ def RotationProcess():
                 angle = float(line[1])
 
                 if angle <= -40:
-                    #log("Pointing left")
+                    log("Pointing left")
                     current = "270"
 
                 if -40 <= angle <= 40:
-                    #log("Pointing up")
+                    log("Pointing up")
                     current = "0"
 
                 if 40 <= angle:
-                    #log("Pointing right")
+                    log("Pointing right")
                     current = "90"
 
-                if current != old:
+                log("current: " + current)
+                log("old: " + old)
+
+                if current != old or firstCycle:
                     if operatingSystem == "windows":
                         if windowsfallback:
                             run("'" + displayexe + "' /device " + str(displayID) + " /rotate " + str(current), shell=True)
@@ -123,6 +131,7 @@ def RotationProcess():
                     else: # I (do not) use Arch btw, so this may not be the most optimal solution, or even work.
                         run("xrandr --output HDMI1 --rotate " + current + " &", shell=True)  # --screen [deviceID] ?
 
+                    firstCycle = False
                     old = current
             
             # Turning a monitor off will cause an exception to be thrown.
