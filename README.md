@@ -14,10 +14,10 @@ Note: The only Arduino I own is the Nano 33 BLE. This should work with other boa
 
 2. In AutomaticDesktopRotation.py, set ```DeviceCount =``` to the number of Arduinos you are using.
 #### Windows
-To make AutoScreenRotation.py start on boot: 
-1. Move AutoScreenRotation.py to ```%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup\```
+To make AutomaticDesktopRotation.py start on boot: 
+1. Move AutomaticDesktopRotation.py to ```%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup\```
 2. Change the file extension to .pyw. 
-3. Make sure Windows is set to open .pyw files by right-clicking AutoScreenRotation.pyw, selecting 'open with', checking 'always use this app to open .pyw files', and selecting pythonw.exe, located in ```AppData\Local\Programs\Python\Python310```. 
+3. Make sure Windows is set to open .pyw files by right-clicking AutomaticDesktopRotation.pyw, selecting 'open with', checking 'always use this app to open .pyw files', and selecting pythonw.exe, located in ```AppData\Local\Programs\Python\Python310```. 
     
 
 #### Linux
@@ -25,7 +25,7 @@ To make AutoScreenRotation.py start on boot:
 Debian-based: ```sudo apt install xrandr```<br>
 Arch-based: ```sudo pacman xorg-xrandr```<br>
 rpm-based: ```sudo dnf install xrandr```
-2. To make AutoScreenRotation.py start on boot:<br>
+2. To make AutomaticDesktopRotation.py start on boot:<br>
     1. Run ```sudo nano /etc/systemd/system/AutoScreenRotation.service```
     2. Paste the following text, replacing {python path} and {script path} appropriately.
 ```
@@ -33,7 +33,7 @@ rpm-based: ```sudo dnf install xrandr```
 Description="Automatic screen rotation"
 
 [Service]
-ExecStart={python path} {script path}/AutoScreenRotation.py
+ExecStart={python path} {script path}/AutomaticDesktopRotation.py
 
 [Install]
 WantedBy=multi-user.target
