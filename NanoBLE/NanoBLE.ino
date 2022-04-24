@@ -24,12 +24,6 @@ void loop() {
     IMU.readAcceleration(x, y, z);
   }
 
-  if (x > 0.1) {
-    x = 100 * x;
-  }
-  if (x < -0.1) {
-    x = 100 * x;
-  }
   if (y > 0.1) {
     y = 100 * y;
     Serial.print(displayID);
