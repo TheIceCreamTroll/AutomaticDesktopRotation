@@ -1,8 +1,6 @@
 #include <Arduino_LSM9DS1.h>
 
 float x, y, z;
-int degreesX = 0;
-int degreesY = 0;
 
 // See the readme on assigning this value. If you have just one monitor, leave it at 1.
 int displayID = 1;
@@ -24,17 +22,10 @@ void loop() {
     IMU.readAcceleration(x, y, z);
   }
 
-  if (y > 0.1) {
-    y = 100 * y;
-    Serial.print(displayID);
-    Serial.print(" ");
-    Serial.println(y);
-  }
-  if (y < -0.1) {
-    y = 100 * y;
-    Serial.print(displayID);
-    Serial.print(" ");
-    Serial.println(y);
-  }
+  y = 100 * y;
+  Serial.print(displayID);
+  Serial.print(" ");
+  Serial.println(y);
+
   delay(700);
 }
