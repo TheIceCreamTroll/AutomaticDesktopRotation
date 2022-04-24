@@ -12,7 +12,7 @@ Note: The only Arduino I own is the Nano 33 BLE. This should work with other boa
 
 1. Install your OS's required Python modules with: ```pip install -f requirements.txt```<br>
 
-2. In AuotmaticDesktopRotation.py, set ```DeviceCount =``` to the number of Arduinos you are using.
+2. In AutomaticDesktopRotation.py, set ```DeviceCount =``` to the number of Arduinos you are using.
 #### Windows
 To make AutoScreenRotation.py start on boot: 
 1. Move AutoScreenRotation.py to ```%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup\```
