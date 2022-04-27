@@ -12,7 +12,7 @@ import serial.tools.list_ports as listports
 DeviceCount = 2
 
 # If, for whatever reason, the win32api rotation method doesn't work, this is a functionally equivalent fallback
-windowsfallback = True
+windowsfallback = False
 displayexe = "display64.exe" # Path to display64.exe
 # Enable this to print stuff to console. Wouldn't do anything while running in the background.
 quiet = True
