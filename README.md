@@ -15,8 +15,9 @@ Note: The only Arduino I own is the Nano 33 BLE. This should work with other boa
 
 #### Windows
 
-There are two methods this script can use to rotate your monitor on Windows: The pywin32 Python module (this is used by default) and display64.exe.<br>
-While they are functionally the same, I've noticed that if you rotate your monitor from 90 to 270 degrees using pywin32 without letting Windows
+There are two methods this script can use to rotate your monitor on Windows: The pywin32 Python module (this is used by default) and display64.exe.
+
+While they are functionally the same, I've noticed that while using pywin32, if you rotate your monitor from 90 to 270 degrees without letting Windows
 rotate to 0 degrees partway through, the screen wouldn't rotate. Display64.exe does not have this issue.
 
 There may be other scenarios where one is better than the other, so give them both a try.
