@@ -8,18 +8,18 @@ import serial.tools.list_ports as listports
 
 ######## Edit these values as needed ##############
 
+# Only disable this for debugging.
+quiet = True
+
 # Number of Arduinos being used.
 DeviceCount = 2
 
-# If, for whatever reason, the win32api rotation method doesn't work, this is a functionally equivalent fallback
-windowsfallback = False
+# Alternative rotation method.
+windowsfallback = True
 displayexe = "display64.exe" # Path to display64.exe
-# Enable this to print stuff to console. Wouldn't do anything while running in the background.
-quiet = True
 
 ###################################################
 
-# The OS determines which method we use to rotate the screen.
 if platform.startswith('win32'):
     if not windowsfallback:
         import win32api as win32
