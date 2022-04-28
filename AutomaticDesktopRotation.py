@@ -15,7 +15,7 @@ quiet = True
 DeviceCount = 2
 
 # Alternative rotation method.
-windowsfallback = True
+windowsfallback = False
 displayexe = "display64.exe" # Path to display64.exe
 
 ###################################################
