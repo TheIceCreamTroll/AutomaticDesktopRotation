@@ -63,13 +63,12 @@ ktopRotation.py as needed, as I haven't actually tested it yet (not a Linux user
 
 ## Mounting the Arduino on your monitor
 
-Your Arduino Nano should have its USB port pointing down, and its reset button facing outwards. Find some way to secure it, and you're done. 
+Your Arduino Nano should have its USB port pointing down, and its reset button facing outwards like this:
+
+<img src="https://user-images.githubusercontent.com/33820904/167172725-83daf441-3a0e-48d5-ae98-bb88502987e5.jpg" width="500">
+
+
 
 ## Demo
 
-
-
-
-https://user-images.githubusercontent.com/33820904/167067854-a62818c5-4ff4-46eb-9599-8bb2a529af55.mp4
-
-
+https://user-images.githubusercontent.com/33820904/167163670-3158abf7-d2fd-440a-8990-3475fdbc0dc9.mp4
