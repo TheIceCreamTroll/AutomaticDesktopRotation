@@ -65,8 +65,7 @@ ktopRotation.py as needed, as I haven't actually tested it yet (not a Linux user
 
 Your Arduino Nano should have its USB port pointing down, and its reset button facing outwards like this:
 
-<img src="https://user-images.githubusercontent.com/33820904/167172725-83daf441-3a0e-48d5-ae98-bb88502987e5.jpg" width="500">
-
+<img src="https://user-images.githubusercontent.com/33820904/167181039-eb83da52-78ec-4961-87ce-9b6d54d1de27.jpg" width="500">
 
 
 ## Demo
