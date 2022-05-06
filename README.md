@@ -68,7 +68,8 @@ Your Arduino Nano should have its USB port pointing down, and its reset button f
 ## Demo
 
 
-https://user-images.githubusercontent.com/33820904/167062482-ddec4c1a-bb3a-4361-bd0e-ac137c0acfda.mp4
 
+
+https://user-images.githubusercontent.com/33820904/167067854-a62818c5-4ff4-46eb-9599-8bb2a529af55.mp4
 
 
