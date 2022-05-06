@@ -56,8 +56,19 @@ WantedBy=multi-user.target
 ```sudo systemctl enable AutoScreenRotation.service```<br>
 5. Start the service.<br>
 ```sudo systemctl start AutoScreenRotation.service```<br>
-4. Make sure to modify the xrandr command in AutomaticDesktopRotation.py as needed, as I haven't actually tested it yet (not a Linux user), and it's probably borked.
+4. Make sure to modify the xrandr command in AutomaticDes
+
+
+ktopRotation.py as needed, as I haven't actually tested it yet (not a Linux user), and it's probably borked.
 
 ## Mounting the Arduino on your monitor
 
 Your Arduino Nano should have its USB port pointing down, and its reset button facing outwards. Find some way to secure it, and you're done. 
+
+## Demo
+
+
+https://user-images.githubusercontent.com/33820904/167062482-ddec4c1a-bb3a-4361-bd0e-ac137c0acfda.mp4
+
+
+
