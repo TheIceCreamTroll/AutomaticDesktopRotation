@@ -65,6 +65,7 @@ def waitForSerialInit():
 def RotationProcess():
 
     ser = waitForSerialInit()
+    old_angle = 0
 
     while True:
         try:
@@ -98,28 +99,31 @@ def RotationProcess():
                     log("Pointing right")
                     current = "90"
 
-                if operatingSystem == "windows":
-                    if windowsfallback:
-                        run(f"{displayexe} /device {displayID} /rotate {current} /display none", shell=True)
-                    else:
-                        device = win32.EnumDisplayDevices(None, displayID - 1)
-                        dm = win32.EnumDisplaySettings(device.DeviceName, win32con.ENUM_CURRENT_SETTINGS)
+                if current != old_angle:
+                    if operatingSystem == "windows":
+                        if windowsfallback:
+                            run(f"{displayexe} /device {displayID} /rotate {current} /display none", shell=True)
+                        else:
+                            device = win32.EnumDisplayDevices(None, displayID - 1)
+                            dm = win32.EnumDisplaySettings(device.DeviceName, win32con.ENUM_CURRENT_SETTINGS)
 
-                        if current == "0":
-                            log("Rotating to 0 degrees")
-                            dm.DisplayOrientation = win32con.DMDO_DEFAULT
-                        elif current == "90":
-                            log("Rotating to 90 degrees")
-                            dm.DisplayOrientation = win32con.DMDO_90
-                        elif current == "270":
-                            log("Rotating to 270 degrees")
-                            dm.DisplayOrientation = win32con.DMDO_270
+                            if current == "0":
+                                log("Rotating to 0 degrees")
+                                dm.DisplayOrientation = win32con.DMDO_DEFAULT
+                            elif current == "90":
+                                log("Rotating to 90 degrees")
+                                dm.DisplayOrientation = win32con.DMDO_90
+                            elif current == "270":
+                                log("Rotating to 270 degrees")
+                                dm.DisplayOrientation = win32con.DMDO_270
 
-                        dm.PelsWidth, dm.PelsHeight = dm.PelsHeight, dm.PelsWidth
-                        win32.ChangeDisplaySettingsEx(device.DeviceName, dm)
+                            dm.PelsWidth, dm.PelsHeight = dm.PelsHeight, dm.PelsWidth
+                            win32.ChangeDisplaySettingsEx(device.DeviceName, dm)
 
-                else: # I (do not) use Arch btw, so this may not be the most optimal solution, or even work.
-                    run(f"xrandr --output HDMI1 --rotate {current} &", shell=True)  # --screen [deviceID] ?
+                    else: # I (do not) use Arch btw, so this may not be the most optimal solution, or even work.
+                        run(f"xrandr --output HDMI1 --rotate {current} &", shell=True)  # --screen [deviceID] ?
+
+                old_angle = current
 
             # Turning a monitor off will cause an exception to be thrown.
             except Exception as e:
@@ -129,5 +133,4 @@ def RotationProcess():
 # Start a thread for each device.
 threads = []
 for monitor in range(DeviceCount):
-    t = Thread(target=RotationProcess).start()
-    threads.append(t)
+    Thread(target=RotationProcess).start()
