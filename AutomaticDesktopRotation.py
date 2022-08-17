@@ -15,7 +15,7 @@ quiet = True
 DeviceCount = 2
 
 # Alternative rotation method.
-windowsfallback = True
+windowsfallback = False
 displayexe = "display64.exe" # Path to display64.exe
 
 ###################################################
@@ -133,4 +133,5 @@ def RotationProcess():
 # Start a thread for each device.
 threads = []
 for monitor in range(DeviceCount):
-    Thread(target=RotationProcess).start()
+    t = Thread(target=RotationProcess).start()
+    threads.append(t)
