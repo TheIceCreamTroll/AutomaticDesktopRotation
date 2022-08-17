@@ -123,7 +123,7 @@ def RotationProcess():
                     else: # I (do not) use Arch btw, so this may not be the most optimal solution, or even work.
                         run(f"xrandr --output HDMI1 --rotate {current} &", shell=True)  # --screen [deviceID] ?
 
-                old_angle = current
+                    old_angle = current
 
             # Turning a monitor off will cause an exception to be thrown.
             except Exception as e:
