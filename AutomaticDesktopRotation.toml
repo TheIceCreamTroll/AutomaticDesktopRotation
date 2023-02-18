@@ -1,0 +1,41 @@
+####################################################################################################
+# This is the config file for AutomaticDesktopRotation.py                                          #
+#                                                                                                  #
+# Changes are read and applied while the script is running                                         #
+# Except for device_count and quiet, which require the script to be restarted for changes to apply #
+####################################################################################################
+
+# Prints messages to the console. Only needed for debugging.
+quiet = true
+
+# Number of Arduinos being used.
+device_count = 2
+
+# Alternative rotation method (Display64.exe). Default is pywin32
+windows_fallback = true
+
+# Path to display64.exe
+displayexe = 'display64.exe'
+
+# Enables switching Wallpaper Engine wallpapers (Windows only)
+enable_wallpaper_engine = false
+
+
+[monitor.1]
+monitor_index = 1
+0.name = 'Clouds'
+0.path = 'H:\SteamLibrary\steamapps\workshop\content\431960\1944932043\project.json'
+90.name = 'Im Sorry Jon.'
+90.path = 'H:\SteamLibrary\steamapps\workshop\content\431960\2682598610\project.json'
+270.name = 'Edgerunners Lucy'
+270.path = 'H:\SteamLibrary\steamapps\workshop\content\431960\2866586232\project.json'
+
+[monitor.2]
+monitor_index = 2
+0.name = 'Calvin and Hobbes'
+0.path = 'H:\SteamLibrary\steamapps\workshop\content\431960\1923306820\project.json'
+90.name = 'Im Sorry Jon.'
+90.path = 'H:\SteamLibrary\steamapps\workshop\content\431960\2682598610\project.json'
+270.name = 'World Tree'
+270.path = 'H:\SteamLibrary\steamapps\workshop\content\431960\2849072148\project.json'
+
