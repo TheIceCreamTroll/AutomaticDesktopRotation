@@ -19,12 +19,28 @@ config_name = "AutomaticDesktopRotation.toml"
 ############################################ No Settings Beyond This Point ############################################
 
 
+# TODO - merge these into 1 dict with a linux and windows key
+orientations = {
+    0: "0",
+    1: "90",
+    2: "180",
+    3: "270"
+}
+
+linux_orientations = {
+    "0": "normal",
+    "90": "left",
+    "180": "inverted",
+    "270": "right"
+}
+
+
 class Config:
     def __init__(self):
         self.config_path = Path(config_path).parent / config_name
         self.config_mtime = 0
         self.config = None
-        self.refresh_needed = True  # Do a refresh on startup to make sure any changes to the wallpapers get reflected
+        self.refresh_needed = True  # Do a refresh on startup to make sure changes are applied
         self.load_config()
 
     def load_config(self):
@@ -115,7 +131,7 @@ def wp_rotate(monitor_id, rotation, config):
         wp_path = config.config['monitor'][str(monitor_id)][rotation]['path']
         wp_monitor = config.config['monitor'][str(monitor_id)]['monitor_index']
 
-        log(f"Applying wallpaper {wp_name} for monitor {monitor_id}. Path: {wp_path}")
+        log(f'Display: {monitor_id} | loading new wp: {wp_name}')
         run([wp_exe, '-control', 'openWallpaper', '-file', wp_path, '-monitor', str(wp_monitor)])
     else:
         log('Could not locate the Wallpaper Engine executable')
@@ -124,9 +140,7 @@ def wp_rotate(monitor_id, rotation, config):
 def RotationProcess():
     # We need to give each process its own config object or else config refreshes will only occur on one of them
     config = Config()
-
     ser = waitForSerialInit()
-    old_angle = 0
 
     while True:
         config.reload_config()
@@ -144,55 +158,78 @@ def RotationProcess():
         if len(line) != 0:
             try:
                 line = line.strip().split()
-                log(line)
+                # log(line)
 
                 display_id = int(line[0])
                 angle = float(line[1])
 
+                # Most accurate way to get the OS rotation - should fix instances where it wasn't self-correcting
+                # This can also be done with display64.exe, but it is too slow to be usable
+                if operating_system == 'windows':
+                    device = win32.EnumDisplayDevices(None, display_id - 1)
+                    current_angle = orientations[win32.EnumDisplaySettings(device.DeviceName, win32con.ENUM_CURRENT_SETTINGS).DisplayOrientation]
+                else:
+                    # While xrandr can't rotate a display on Wayland, it can still read its rotation
+                    for m in run(['xrandr', '--listmonitors'], capture_output=True).stdout.decode().splitlines()[1::]:
+                        if m.split(':')[0].strip() == str(display_id - 1):
+                            xrandr_id = m.split()[-1]
+                            break
+                    else:
+                        log(f'Error! Xrandr could not find monitor {display_id}')
+
+                    current_angle = run(f"xrandr -q --verbose | grep {xrandr_id} | sed 's/primary //' | awk '{{print $5}}'", capture_output=True, shell=True).stdout.decode().strip()
+
                 if angle <= -40:
-                    log("Pointing left")
-                    current = "270"
+                    # log("Pointing left")
+                    new_angle = "270"
 
                 if -40 <= angle <= 40:
-                    log("Pointing up")
-                    current = "0"
+                    # log("Pointing up")
+                    new_angle = "0"
 
                 if 40 <= angle:
-                    log("Pointing right")
-                    current = "90"
+                    # log("Pointing right")
+                    new_angle = "90"
 
-                if current != old_angle or config.refresh_needed:
+                log(f'Display: {display_id} | current: {current_angle:<3} | measured: {new_angle:<3} | fallback: {config.windows_fallback} | wp engine: {config.enable_wallpaper_engine}')
+
+                if new_angle != current_angle or config.refresh_needed:
                     if config.refresh_needed:
                         config.refresh_needed = False
 
                     if operating_system == "windows":
                         if config.windows_fallback:
-                            run(f"{config.displayexe} /device {display_id} /rotate {current} /display none")
-
+                            run([config.displayexe, '/device', str(display_id), '/rotate', str(new_angle), '/display', 'none'])
                         else:
-                            device = win32.EnumDisplayDevices(None, display_id - 1)
                             dm = win32.EnumDisplaySettings(device.DeviceName, win32con.ENUM_CURRENT_SETTINGS)
 
-                            if current == "0":
+                            if new_angle == "0":
                                 log("Rotating to 0 degrees")
                                 dm.DisplayOrientation = win32con.DMDO_DEFAULT
-                            elif current == "90":
+                            elif new_angle == "90":
                                 log("Rotating to 90 degrees")
                                 dm.DisplayOrientation = win32con.DMDO_90
-                            elif current == "270":
+                            elif new_angle == "270":
                                 log("Rotating to 270 degrees")
                                 dm.DisplayOrientation = win32con.DMDO_270
 
-                            dm.PelsWidth, dm.PelsHeight = dm.PelsHeight, dm.PelsWidth
-                            win32.ChangeDisplaySettingsEx(device.DeviceName, dm)
 
-                    else:  # TODO - eventually test this
-                        run(['xrandr', '--output', 'HDMI1', '--rotate', current, '&'])  # --screen [deviceID] ?
+                            # TODO - figure why going from -90 to 270 causes -2 (BADMODE) to be returned
+                            #  This is a deep dark rabbit hole and life is easier if you stick with display64.exe
+                            #  would be nice to figure it out though
+                            dm.PelsWidth, dm.PelsHeight = dm.PelsHeight, dm.PelsWidth
+                            rotation_return_code = win32.ChangeDisplaySettingsEx(device.DeviceName, dm)
+
+                    else:
+                        # Gnome: https://gitlab.com/Oschowa/gnome-randr
+                        # Someone will have to PR this (and any other DEs), as I only use KDE
+
+                        # KDE
+                        run(["kscreen-doctor", f"output.{display_id - 1}.rotation.{linux_orientations[new_angle]}"], capture_output=True)
+                        # run(["xrandr", "-o", orientations[linux_orientations]]) - does not work on wayland...
 
                     if config.enable_wallpaper_engine:
-                        wp_rotate(display_id, current, config)
-
-                    old_angle = current
+                        wp_rotate(display_id, new_angle, config)
 
             # Turning a monitor off will cause an exception to be thrown.
             except Exception as e:
@@ -202,9 +239,8 @@ def RotationProcess():
 global_config = Config()
 
 if platform.startswith('win32'):
-    if not global_config.windows_fallback:
-        import win32api as win32
-        import win32con
+    import win32api as win32
+    import win32con
     operating_system = "windows"
 else:
     operating_system = "linux"  # OSX can use xrandr via MacPorts. FreeBSD should be able to use it as well.
