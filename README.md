@@ -39,7 +39,7 @@ monitor_index = 1
 There are two methods this script can use to rotate your monitor on Windows: The pywin32 Python module (this is used by default) and display64.exe.
 
 While they are functionally the same, I've noticed that while using pywin32, if you rotate your monitor from 90 to 270 degrees without letting Windows
-rotate to 0 degrees partway through, the screen wouldn't rotate. Display64.exe does not have this issue.
+rotate to 0 degrees partway through, the screen will not rotate. If this affects you, use Display64.exe, as it does not have this issue.
 
 There may be other scenarios where one is better than the other, so give them both a try.
 
@@ -54,7 +54,7 @@ To make AutomaticDesktopRotation.py start on boot:
 4. Make sure Windows is set to open .pyw files by right-clicking AutomaticDesktopRotation.pyw, selecting 'open with', checking 'always use this app to open .pyw files', and selecting pythonw.exe, located in `AppData\Local\Programs\Python\Python311`. 
 
 #### Linux
-###### While these instructions are somewhere in the realm of "correct", they have not been tested and may need adjustments to work.
+###### Linux support currently only extends to KDE + Wayland. Any other DE + compositor combination is unsupported
 1. Install xrandr using your distro's package manager.<br>
 Debian-based: `sudo apt install xrandr`<br>
 Arch-based: `sudo pacman xorg-xrandr`<br>
@@ -78,7 +78,6 @@ WantedBy=multi-user.target
 `sudo systemctl enable AutoScreenRotation.service`<br>
 5. Start the service.<br>
 `sudo systemctl start AutoScreenRotation.service`<br>
-4. Make sure to modify the xrandr command in AutomaticDesktopRotation.py as needed, as it isn't tested and may need adjustments to work.
 
 ## Mounting the Arduino on your monitor
 
